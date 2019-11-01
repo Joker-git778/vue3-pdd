@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 
 import "normalize.css";
+import "./common/stylus/mixins.styl";
 import fastclick from "fastclick";
 import LyTab from 'ly-tab';
 

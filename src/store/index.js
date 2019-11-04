@@ -5,14 +5,16 @@ import {
     getHomeCasula,
     getHomeNav,
     getHomeShopList,
-    getRecommentShopList
+    getRecommentShopList,
+    getSearchGoods
 } from '../api/index';
 
 import {
     HOME_CASUAL,
     HOME_NAV,
     HOME_SHOP_LIST,
-    RECOMMENT_SHOP_LIST
+    RECOMMENT_SHOP_LIST,
+    GET_SEARCH_GOODS
 } from "./mutation-type";
 
 Vue.use(Vuex)
@@ -26,7 +28,9 @@ export default new Vuex.Store({
         // 首页商品列表
         homeshoplist: [],
         // 推荐商品列表
-        recommendshoplist: []
+        recommendshoplist: [],
+        // 搜索分类列表
+        searchGoods: []
     },
     mutations: {
         // 添加state数据
@@ -41,6 +45,9 @@ export default new Vuex.Store({
         },
         [RECOMMENT_SHOP_LIST](state, { recommendshoplist }) {
             state.recommendshoplist = recommendshoplist;
+        },
+        [GET_SEARCH_GOODS](state, { searchGoods }) {
+            state.searchGoods = searchGoods;
         }
     },
     actions: {
@@ -69,6 +76,12 @@ export default new Vuex.Store({
             const res = await getRecommentShopList();
             const recommendshoplist = res.message.data;
             commit(RECOMMENT_SHOP_LIST, { recommendshoplist });
+        },
+        // 获取搜索分类列表
+        async reqSearchGoods({ commit }) {
+            const res = await getSearchGoods();
+            const searchGoods = res.message.data;
+            commit(GET_SEARCH_GOODS, { searchGoods });
         }
     },
     modules: {}

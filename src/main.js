@@ -8,7 +8,11 @@ import "./common/stylus/mixins.styl";
 import fastclick from "fastclick";
 import LyTab from 'ly-tab';
 
+import vuescroll from 'vuescroll';
+import 'vuescroll/dist/vuescroll.css';
+
 Vue.use(LyTab);
+Vue.use(vuescroll);
 
 Vue.config.productionTip = false
 

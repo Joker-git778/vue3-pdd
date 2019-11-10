@@ -1,6 +1,6 @@
 <template>
   <div class="search_nav">
-      <a href="" class="search_nav_icon">
+      <a href="#" class="search_nav_icon" @click.prevent="isShowSearchPanel(true)">
           <img src="../images/search.png" alt="" width="25px">
           <span>搜索栏</span>
       </a>
@@ -14,6 +14,9 @@ export default {
     return {
 
     }
+  },
+  props: {
+    isShowSearchPanel: Function
   },
   components: {
 

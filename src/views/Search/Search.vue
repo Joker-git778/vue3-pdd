@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <SearchNav />
+    <SearchNav :isShowSearchPanel="isShowSearchPanel"/>
     <div class="shop">
       <!-- 左面 -->
       <div class="menu_wrapper" ref="menu_wrapper">
@@ -45,6 +45,8 @@
         </ul>
       </div>
     </div>
+    <!-- 搜索面板 -->
+    <SearchPanel :isShowSearchPanel="isShowSearchPanel" v-if="isShow"/>
   </div>
 </template>
 
@@ -60,13 +62,16 @@ import { mapState } from "vuex";
  */
 import BScroll from "better-scroll";
 import SearchNav from "./children/SearchNav";
+import SearchPanel from "./SearchPanel";
 export default {
   name: "search",
   data() {
     return {
+      last: false, // 点击最后一个bug
       // 2.3.3 定义属性
       scrollY: 0, // 右侧滑动Y轴坐标 (实时更新)
-      rightLiTops: [] // 所有分类的头部位置
+      rightLiTops: [], // 所有分类的头部位置
+      isShow: false // 搜索面板的显示隐藏
     };
   },
   mounted() {
@@ -76,6 +81,10 @@ export default {
     ...mapState(["searchGoods"]),
     // 3.2 定义动态属性
     currentIndex() {
+      if (this.last) {
+        // console.log(this.searchGoods.length)
+        return this.searchGoods.length-1;
+      }
       const { scrollY, rightLiTops } = this;
       // 3.2.1 取出索引 返回循环
       return rightLiTops.findIndex((value, index) => {
@@ -123,27 +132,44 @@ export default {
     },
     // 2.3 求出右边所有板块的位置 事件
     _initRightLiTops() {
-      // 2.3.1 临时数组
-      const tempArr = [];
-      // 2.3.2 定义变量记录高度
-      let top = 0;
-      tempArr.push(top); // 添加第一个的高度
-      // 2.3.3 遍历li标签 取出高度
-      let allLis = this.$refs.shopsParent.getElementsByClassName("shops_li");
-      // console.log(allLis);
-      Array.prototype.slice.call(allLis).forEach(li => {
-        top += li.clientHeight;
-        // console.log(top);
-        tempArr.push(top);
-      });
-      // 2.3.4 更新数据
-      this.rightLiTops = tempArr;
+          // 2.3.1 临时数组
+        const tempArr = [];
+        // 2.3.2 定义变量记录高度
+        let top = 0;
+        tempArr.push(top); // 添加第一个的高度
+        // 2.3.3 遍历li标签 取出高度
+          let allLis = this.$refs.shopsParent.getElementsByClassName("shops_li");
+          // console.log(allLis);
+          Array.prototype.slice.call(allLis).forEach((li, index) => {
+            if (li.getElementsByClassName("phone_type").length) { // 防止手机模块下面的出bug
+              top += li.clientHeight + 75;
+              // console.log(li)
+            } else {
+              top += li.clientHeight;
+              // console.log(top);
+            }
+            tempArr.push(top);
+          });
+          // 2.3.4 更新数据
+        this.rightLiTops = tempArr;
     },
     // 4. 点击左面切换右面
     clickLeftItem(index) {
       // console.log(index);
       // 4.1 判断是不是点击最后一个
+      let leftUl = document.getElementsByClassName("menu_item").length-1;
+      // console.log(leftUl)
+      // console.log(index);
+      if (leftUl === index) {
+        this.last = true;
+        const scrollY = this.rightLiTops[leftUl];
+        this.scrollY = scrollY;
+        this.rightScroll.scrollTo(0, -scrollY, 300);
+        return;
+      } 
+      this.last = false;
       const scrollY = this.rightLiTops[index];
+      // console.log(scrollY);
       this.scrollY = scrollY;
       this.rightScroll.scrollTo(0, -scrollY, 300);
     },
@@ -153,12 +179,16 @@ export default {
       // console.log(menuLists);
       let el = menuLists[index]; // 获取到li标签
       // console.log(el)
-      this.leftScroll.scrollToElement(el, 300, 0, -50)
-      
+      this.leftScroll.scrollToElement(el, 300, 0, -60);
+    },
+    // 搜索面板显示隐藏
+    isShowSearchPanel(flag) {
+      this.isShow = flag;
     }
   },
   components: {
-    SearchNav
+    SearchNav,
+    SearchPanel
   }
 };
 </script>

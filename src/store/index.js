@@ -44,7 +44,7 @@ export default new Vuex.Store({
             state.homeshoplist = homeshoplist;
         },
         [RECOMMENT_SHOP_LIST](state, { recommendshoplist }) {
-            state.recommendshoplist = recommendshoplist;
+            state.recommendshoplist = state.recommendshoplist.concat(recommendshoplist);
         },
         [GET_SEARCH_GOODS](state, { searchGoods }) {
             state.searchGoods = searchGoods;
@@ -55,7 +55,7 @@ export default new Vuex.Store({
         async reqHomeCasula({ commit }) {
             // 异步请求ajax
             const res = await getHomeCasula();
-            const homecasual = res.message.data;
+            const homecasual = res.message;
             // 调用同步方法 
             commit(HOME_CASUAL, { homecasual });
         },
@@ -72,9 +72,9 @@ export default new Vuex.Store({
             commit(HOME_SHOP_LIST, { homeshoplist })
         },
         // 推荐商品列表
-        async reqRecommentShopList({ commit }) {
-            const res = await getRecommentShopList();
-            const recommendshoplist = res.message.data;
+        async reqRecommentShopList({ commit }, params) {
+            const res = await getRecommentShopList(params);
+            const recommendshoplist = res.message;
             commit(RECOMMENT_SHOP_LIST, { recommendshoplist });
         },
         // 获取搜索分类列表

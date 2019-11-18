@@ -1,25 +1,25 @@
 <template>
   <div class="hot">
-    <swiper :options="swiperOption" ref="mySwiper" class="ad_swiper" v-if="homecasual">
+    <swiper :options="swiperOption" ref="mySwiper" class="ad_swiper" v-if="homecasual.length > 0">
       <!-- slides -->
       <swiper-slide v-for="(items, index) in homecasual" :key="index">
-        <img :src="items.imgurl" alt="" class="ad_img">
+        <img :src="items.imgurl" alt class="ad_img" />
       </swiper-slide>
       <!-- Optional controls -->
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
     <!-- 轮播 -->
-    <HotNav/>
+    <HotNav />
     <div class="hot_ad">
-      <img src="../../imgs/hot_ad/home_ad.gif" alt="">
+      <img src="../../imgs/hot_ad/home_ad.gif" alt />
     </div>
     <!-- 商品列表 -->
-    <HotShopList/>
+    <HotShopList />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions } from "vuex";
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import HotNav from "./HotNav";
@@ -29,18 +29,12 @@ export default {
   data() {
     return {
       swiperOption: {
-        // 参数选项,显示分页器
+        slidesPerView: 1,
+        loop: true,
         pagination: {
-          el: '.swiper-pagination'
-        },
-        autoplay: true,
-        //循环 
-        loop:true, 
-        //每张播放时长3秒，自动播放 
-        autoplay: true, 
-        //滑动速度 
-        speed:1000, 
-        // delay:1000
+          el: ".swiper-pagination",
+          clickable: true
+        }
       },
       swiperImgs: [
         require("../../imgs/rowing/s1.png"),
@@ -75,19 +69,29 @@ export default {
 </script>
 
 <style lang="stylus">
-.hot 
-  width 100%
-  height 100vh
-  img 
-    width 100%
-  .ad_swiper
-    .swiper-pagination
-      text-align right
-      margin-right 3px
-    .swiper-pagination-bullet-active
-      background-color #ff0000
-  .hot_ad
-    background-color #fff
-    margin 8px 0
-    padding 5px
+.hot {
+  width: 100%;
+  height: 100vh;
+
+  img {
+    width: 100%;
+  }
+
+  .ad_swiper {
+    .swiper-pagination {
+      text-align: right;
+      margin-right: 3px;
+    }
+
+    .swiper-pagination-bullet-active {
+      background-color: #ff0000;
+    }
+  }
+
+  .hot_ad {
+    background-color: #fff;
+    margin: 8px 0;
+    padding: 5px;
+  }
+}
 </style>

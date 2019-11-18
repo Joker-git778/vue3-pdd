@@ -14,7 +14,7 @@
         </a>
       </div>
       <div class="scrollbar"></div>
-    </div>
+    </div>*
     </vue-scroll>
   </div>
 </template>

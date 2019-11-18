@@ -12,7 +12,7 @@ export const getHomeNav = () => ajax(`${BASE_URL}/api/homenav`);
 export const getHomeShopList = () => ajax(`${BASE_URL}/api/homeshoplist`);
 
 // 推荐商品列表
-export const getRecommentShopList = () => ajax(`${BASE_URL}/api/recommendshoplist`);
+export const getRecommentShopList = (params) => ajax(`${BASE_URL}/api/recommendshoplist`, params);
 
 // 搜索列表数据
 export const getSearchGoods = () => ajax(`${BASE_URL}/api/searchgoods`);

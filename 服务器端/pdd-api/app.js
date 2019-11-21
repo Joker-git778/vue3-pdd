@@ -3,13 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
 
-// 请求头设置
 app.all("*", function(req, res, next) {
     if (!req.get("Origin")) return next();
     // use "*" here to accept any origin
@@ -21,6 +21,8 @@ app.all("*", function(req, res, next) {
     next();
 });
 
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -30,6 +32,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: '12345', // 对session id 相关的cookie 进行签名
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 设置 session 的有效时间，单位毫秒},
+    resave: false,
+    saveUninitialized: true, // 是否保存未初始化的会话
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

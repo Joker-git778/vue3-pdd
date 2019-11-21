@@ -11,6 +11,11 @@ import LyTab from 'ly-tab';
 import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
 
+// vant
+import { Toast } from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Toast);
+
 Vue.use(LyTab);
 Vue.use(vuescroll);
 

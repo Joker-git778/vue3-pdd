@@ -1,10 +1,11 @@
 <template>
   <div class="me">
-      个人中心
+    <SelectLogin/>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import SelectLogin from "./../Login/SelectLogin";
 export default {
   name:"me",
   data() {
@@ -13,10 +14,14 @@ export default {
     }
   },
   components: {
-
+    SelectLogin
   }
 }
 </script>
 
-<style type="text/css" scoped>
+<style lang="stylus" ref="stylesheet/stylus" scoped>
+.me
+  background-color #f5f5f5
+  width 100%
+  height 100%
 </style>

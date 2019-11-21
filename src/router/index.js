@@ -12,6 +12,9 @@ const routes = [{
         children: [{
             path: 'hot',
             name: 'hot',
+            meta: {
+                showTaBar: true
+            },
             component: () =>
                 import ("@/views/Home/Children/Hot/Hot")
         }, {
@@ -66,19 +69,34 @@ const routes = [{
         path: '/recomment',
         name: 'recomment',
         component: () =>
-            import ("@/views/Recomment/Recomment")
+            import ("@/views/Recomment/Recomment"),
+        meta: {
+            showTaBar: true
+        }
     },
     {
         path: '/chat',
         name: 'chat',
         component: () =>
-            import ("@/views/Chat/Chat")
+            import ("@/views/Chat/Chat"),
+        meta: {
+            showTaBar: true
+        }
     },
     {
         path: '/search',
         name: 'search',
         component: () =>
-            import ("@/views/Search/Search")
+            import ("@/views/Search/Search"),
+        meta: {
+            showTaBar: true
+        }
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: () =>
+            import ("@/views/Login/Login")
     },
     {
         path: '/',

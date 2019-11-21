@@ -76,6 +76,7 @@ export default new Vuex.Store({
             const res = await getRecommentShopList(params);
             const recommendshoplist = res.message;
             commit(RECOMMENT_SHOP_LIST, { recommendshoplist });
+            params.callback && params.callback();
         },
         // 获取搜索分类列表
         async reqSearchGoods({ commit }) {

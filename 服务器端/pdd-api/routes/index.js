@@ -6,10 +6,11 @@ const svgCaptcha = require('svg-captcha');
 const sms_util = require('./../util/sms_util');
 const md5 = require('blueimp-md5');
 
+let users = {}; // 用户信息
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     // res.render('index', { title: 'Express' });
-
 });
 
 const recommendArr = require('./../data/recommend').data;
@@ -74,7 +75,7 @@ router.get('/api/homecasual', (req, res) => {
 router.get('/api/homenav', (req, res) => {
     /*
     let sqlStr = 'select * from homenav';
-     conn.query(sqlStr, (err, results) => {
+     connection.query(sqlStr, (err, results) => {
          if (err) return res.json({err_code: 1, message: '资料不存在', affextedRows: 0})
          res.json({success_code: 200, message: results, affextedRows: results.affextedRows})
      })
@@ -89,7 +90,7 @@ router.get('/api/homenav', (req, res) => {
 router.get('/api/homeshoplist', (req, res) => {
     /*
   let sqlStr = 'select * from homeshoplist';
-   conn.query(sqlStr, (err, results) => {
+   connection.query(sqlStr, (err, results) => {
        if (err) return res.json({err_code: 1, message: '资料不存在', affextedRows: 0})
        res.json({success_code: 200, message: results, affextedRows: results.affextedRows})
    })
@@ -171,7 +172,7 @@ router.get('/api/captcha', (req, res) => {
 /*
   发送验证码短信
 */
-router.get('/api/send_code', (req, res) => {
+router.get('/api/sendCode', (req, res) => {
     // 1. 获取手机号码
     let phone = req.query.phone;
 
@@ -179,9 +180,10 @@ router.get('/api/send_code', (req, res) => {
     let code = sms_util.randomCode(6);
     // console.log(code);
 
+    // 接口 发送短信
     /* sms_util.sendCode(phone, code, function (success) {
         if (success) {
-             users[phone] = code;
+             users.phone = code;
              res.json({success_code: 200, message: '验证码获取成功!'});
          } else {
              res.json({err_code: 0, message: '验证码获取失败!'});
@@ -190,7 +192,7 @@ router.get('/api/send_code', (req, res) => {
 
     // 成功
     setTimeout(() => {
-        users[phone] = code;
+        users.phone = code;
         res.json({ success_code: 200, message: code });
     }, 2000);
 
@@ -198,7 +200,7 @@ router.get('/api/send_code', (req, res) => {
     /*setTimeout(()=>{
         res.json({err_code: 0, message: '验证码获取失败!'});
     }, 2000);*/
-    // res.json({err_code: 0, message: '验证码获取失败!'});
+    // res.json({ err_code: 0, message: '验证码获取失败!' });
 
 });
 
@@ -206,22 +208,23 @@ router.get('/api/send_code', (req, res) => {
 /*
   手机验证码登录
 */
-router.post('/api/login_code', (req, res) => {
+router.post('/api/loginCode', (req, res) => {
     // 1. 获取数据
     const phone = req.body.phone;
     const code = req.body.code;
 
     // 2. 验证验证码是否正确
-    if (users[phone] !== code) {
-        res.json({ err_code: 0, message: '验证码不正确!' });
+    if (users.phone !== code) {
+        return res.json({ err_code: 0, message: '验证码不正确!' });
     }
 
     // 3. 查询数据
-    delete users[phone];
+    delete users.phone;
 
     let sqlStr = "SELECT * FROM pdd_user_info WHERE user_phone = '" + phone + "' LIMIT 1";
 
-    conn.query(sqlStr, (error, results, fields) => {
+    connection.query(sqlStr, (error, results, fields) => {
+        console.log(results)
         if (error) {
             res.json({ err_code: 0, message: '请求数据失败' });
         } else {
@@ -237,13 +240,13 @@ router.post('/api/login_code', (req, res) => {
             } else { // 新用户
                 const addSql = "INSERT INTO pdd_user_info(user_name, user_phone) VALUES (?, ?)";
                 const addSqlParams = [phone, phone];
-                conn.query(addSql, addSqlParams, (error, results, fields) => {
-                    results = JSON.parse(JSON.stringify(results));
-                    // console.log(results);
+                connection.query(addSql, addSqlParams, (error, results, fields) => {
+                    // results = JSON.parse(JSON.stringify(results));
+                    // console.log(req.session.userId);
                     if (!error) {
                         req.session.userId = results.insertId;
                         let sqlStr = "SELECT * FROM pdd_user_info WHERE id = '" + results.insertId + "' LIMIT 1";
-                        conn.query(sqlStr, (error, results, fields) => {
+                        connection.query(sqlStr, (error, results, fields) => {
                             if (error) {
                                 res.json({ err_code: 0, message: '请求数据失败' });
                             } else {
@@ -284,7 +287,7 @@ router.post('/api/login_pwd', (req, res) => {
 
     // 3. 查询数据
     let sqlStr = "SELECT * FROM pdd_user_info WHERE user_name = '" + user_name + "' LIMIT 1";
-    conn.query(sqlStr, (error, results, fields) => {
+    connection.query(sqlStr, (error, results, fields) => {
         if (error) {
             res.json({ err_code: 0, message: '用户名不正确!' });
         } else {
@@ -305,13 +308,13 @@ router.post('/api/login_pwd', (req, res) => {
             } else { // 新用户
                 const addSql = "INSERT INTO pdd_user_info(user_name, user_pwd) VALUES (?, ?)";
                 const addSqlParams = [user_name, user_pwd];
-                conn.query(addSql, addSqlParams, (error, results, fields) => {
+                connection.query(addSql, addSqlParams, (error, results, fields) => {
                     results = JSON.parse(JSON.stringify(results));
                     // console.log(results);
                     if (!error) {
                         req.session.userId = results.insertId;
                         let sqlStr = "SELECT * FROM pdd_user_info WHERE id = '" + results.insertId + "' LIMIT 1";
-                        conn.query(sqlStr, (error, results, fields) => {
+                        connection.query(sqlStr, (error, results, fields) => {
                             if (error) {
                                 res.json({ err_code: 0, message: '请求数据失败' });
                             } else {
@@ -339,7 +342,7 @@ router.get('/api/user_info', (req, res) => {
     let userId = req.session.userId;
     // 1.1 数据库查询的语句
     let sqlStr = "SELECT * FROM pdd_user_info WHERE id = '" + userId + "' LIMIT 1";
-    conn.query(sqlStr, (error, results, fields) => {
+    connection.query(sqlStr, (error, results, fields) => {
         if (error) {
             res.json({ err_code: 0, message: '请求数据失败' });
         } else {
@@ -351,7 +354,11 @@ router.get('/api/user_info', (req, res) => {
                 // 返回数据给客户端
                 res.json({
                     success_code: 200,
-                    message: { id: results[0].id, user_name: results[0].user_name, user_phone: results[0].user_phone }
+                    message: {
+                        id: results[0].id,
+                        user_name: results[0].user_name,
+                        user_phone: results[0].user_phone
+                    }
                 });
             }
         }

@@ -5,10 +5,10 @@ var request = require('request');
 
 /*生成指定长度的随机数*/
 function randomCode(length) {
-    var chars = ['0','1','2','3','4','5','6','7','8','9'];
-    var result = ""; 
-    for(var i = 0; i < length ; i ++) {
-        var index = Math.ceil(Math.random()*9);
+    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    var result = "";
+    for (var i = 0; i < length; i++) {
+        var index = Math.ceil(Math.random() * 9);
         result += chars[index];
     }
     return result;
@@ -29,15 +29,15 @@ function sendCode(phone, code, callback) {
      */
     var sigParameter = '';
     var time = moment().format('YYYYMMDDHHmmss');
-    sigParameter = md5(ACCOUNT_SID+AUTH_TOKEN+time);
-    var url = Rest_URL+'/2013-12-26/Accounts/'+ACCOUNT_SID+'/SMS/TemplateSMS?sig='+sigParameter;
+    sigParameter = md5(ACCOUNT_SID + AUTH_TOKEN + time);
+    var url = Rest_URL + '/2013-12-26/Accounts/' + ACCOUNT_SID + '/SMS/TemplateSMS?sig=' + sigParameter;
 
     //2. 准备请求体
     var body = {
-        to : phone,
-        appId : AppID,
-        templateId : '1',
-        "datas":[code,"1"]
+        to: phone,
+        appId: AppID,
+        templateId: '1',
+        "datas": [code, "1"]
     }
 
     //3. 准备请求头
@@ -49,27 +49,27 @@ function sendCode(phone, code, callback) {
     var authorization = ACCOUNT_SID + ':' + time;
     authorization = Base64.encode(authorization);
     var headers = {
-        'Accept' :'application/json',
-        'Content-Type' :'application/json;charset=utf-8',
-        'Content-Length': JSON.stringify(body).length+'',
-        'Authorization' : authorization
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=utf-8',
+        'Content-Length': JSON.stringify(body).length + '',
+        'Authorization': authorization
     }
 
     //4. 发送请求, 并得到返回的结果, 调用callback
     request({
-        method : 'POST',
-        url : url,
-        headers : headers,
-        body : body,
-        json : true
-    }, function (error, response, body) {
+        method: 'POST',
+        url: url,
+        headers: headers,
+        body: body,
+        json: true
+    }, function(error, response, body) {
         console.log(error, response, body);
-        callback(body.statusCode==='000000');
+        callback(body.statusCode === '000000');
     });
 }
 exports.sendCode = sendCode;
 
 /*
-sendCode('18912989092', randomCode(6), function (success) {
+sendCode('手机号', randomCode(6), function (success) {
     console.log(success);
 })*/

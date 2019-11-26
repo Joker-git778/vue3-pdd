@@ -1,7 +1,7 @@
 <template>
   <div class="recomment">
     <ul class="recomment_container" v-if="recommendshoplist">
-      <ShopList  v-for="item in recommendshoplist" :key="item.goods_id" :item="item" tag="li"/>
+      <ShopList  v-for="(item, index) in recommendshoplist" :key="index" :item="item" tag="li"/>
     </ul>
   </div>
 </template>

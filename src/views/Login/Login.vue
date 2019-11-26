@@ -36,7 +36,7 @@
               </button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
+              <input type="text" maxlength="6" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册撩课帐号的手机号，登录时将自动注册，且代表已同意
@@ -80,6 +80,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { getPhoneCode, phoneCodeLogin } from "@/api/index";
 export default {
   name:"page",
   data() {
@@ -89,10 +90,9 @@ export default {
       countDown: 0, // 倒计时
       phoneRight: false,
       pwd: "",
-      code: "",
+      code: "", // 手机号验证码
       userInfo: "",
       user_name: "", // 密码验证
-      code: "",
       pwdMode: true, // 密码显示false 隐藏 true
       captcha: "" // 验证码
     }
@@ -103,7 +103,7 @@ export default {
       this.loginMode = val;
     },
     // 手机验证码
-    getVerifyCode() {
+    async getVerifyCode() {
       // 1. 开启倒计时
       if (this.phoneRight) {
         this.countDown = 30;
@@ -114,11 +114,43 @@ export default {
             clearInterval(this.intervalId)
           }
         }, 1000)
-      } 
+      };
+      // 2. 获取短信验证码
+      let res = await getPhoneCode(this.phone);
+      console.log(res);
+      // 3. 获取失败
+      if (res.err_code === 0) {
+        this.$notify({ type: 'danger', message: res.message }); // vant 提示
+        this.countDown = 0;
+      }
     },
     // 密码显示方式
     dealPwdMode(val) {
       this.pwdMode = val;
+    },
+    // 获取图形验证码
+    getCaptcha() {
+      this.$refs.captcha.src = "http://localhost:3000/api/captcha?time=" + new Date();
+    },
+    // 登录
+    async login() {
+      // 判断登录方式
+      if (this.loginMode) { // 验证码
+          if (!this.phone) {
+            this.$notify({ type: 'danger', message: "请输入手机号" });
+          } else if (!this.phoneRight) {
+            this.$notify({ type: 'danger', message: "手机号格式不正确" });
+          } else if (!this.code) {
+            this.$notify({ type: 'danger', message: "请输入验证码" });
+          } else if (!/^\d{6}$/.test(this.code)) { // 正则六位纯数字
+            this.$notify({ type: 'danger', message: "验证码格式不正确" });
+          } else {
+            const res = await phoneCodeLogin(this.phone, this.code);
+            console.log(res);
+          }
+      } else { // 密码
+
+      }
     }
   },
   watch: {

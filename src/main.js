@@ -12,9 +12,9 @@ import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
 
 // vant
-import { Toast } from 'vant';
+import { Toast, Notify } from 'vant';
 import 'vant/lib/index.css';
-Vue.use(Toast);
+Vue.use(Toast, Notify);
 
 Vue.use(LyTab);
 Vue.use(vuescroll);

@@ -22,3 +22,6 @@ export const getPhoneCode = (phone) => ajax(`${BASE_URL}/api/sendCode`, phone);
 
 // 手机验证码登录
 export const phoneCodeLogin = (phone, code) => ajax(`${BASE_URL}/api/loginCode`, { phone, code }, 'POST');
+
+// 账号密码登录
+// export const loginPwd = (name, pwd, captcha) => ajax(`${BASE_URL}/api/loginPwd`, { name, pwd, captcha }, 'POST');

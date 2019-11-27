@@ -1,6 +1,9 @@
 <template>
   <div class="me">
-    <SelectLogin/>
+    <SelectLogin v-if="!$store.state.userInfo.id"/>
+    <section v-else>
+      主面板
+    </section>
   </div>
 </template>
 

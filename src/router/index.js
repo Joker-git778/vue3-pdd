@@ -63,7 +63,10 @@ const routes = [{
         path: '/me',
         name: 'me',
         component: () =>
-            import ("@/views/Me/Me")
+            import ("@/views/Me/Me"),
+        meta: {
+            showTaBar: true
+        }
     },
     {
         path: '/recomment',

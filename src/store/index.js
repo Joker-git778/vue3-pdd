@@ -14,7 +14,8 @@ import {
     HOME_NAV,
     HOME_SHOP_LIST,
     RECOMMENT_SHOP_LIST,
-    GET_SEARCH_GOODS
+    GET_SEARCH_GOODS,
+    USER_INFO
 } from "./mutation-type";
 
 Vue.use(Vuex)
@@ -30,7 +31,9 @@ export default new Vuex.Store({
         // 推荐商品列表
         recommendshoplist: [],
         // 搜索分类列表
-        searchGoods: []
+        searchGoods: [],
+        // 用户数据
+        userInfo: {}
     },
     mutations: {
         // 添加state数据
@@ -48,6 +51,9 @@ export default new Vuex.Store({
         },
         [GET_SEARCH_GOODS](state, { searchGoods }) {
             state.searchGoods = searchGoods;
+        },
+        [USER_INFO](state, { userInfo }) {
+            state.userInfo = userInfo;
         }
     },
     actions: {
@@ -83,6 +89,10 @@ export default new Vuex.Store({
             const res = await getSearchGoods();
             const searchGoods = res.message.data;
             commit(GET_SEARCH_GOODS, { searchGoods });
+        },
+        // 同步用户信息
+        syncUserInfo({ commit }, userInfo) {
+            commit(USER_INFO, { userInfo });
         }
     },
     modules: {}

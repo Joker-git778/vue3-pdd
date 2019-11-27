@@ -57,9 +57,7 @@ export default {
       if (this.on === index) {
         return;
       };
-      if (index != this.imgUrl.length-1) {
-          this.on = index;
-      };
+      this.on = index;
       this.$router.push(this.imgUrl[index].routerTo);
     }
   },

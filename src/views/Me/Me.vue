@@ -2,13 +2,14 @@
   <div class="me">
     <SelectLogin v-if="!$store.state.userInfo.id"/>
     <section v-else>
-      主面板
+      <MeTop/>
     </section>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import SelectLogin from "./../Login/SelectLogin";
+import MeTop from "./MeTop";
 export default {
   name:"me",
   data() {
@@ -17,7 +18,8 @@ export default {
     }
   },
   components: {
-    SelectLogin
+    SelectLogin,
+    MeTop
   }
 }
 </script>

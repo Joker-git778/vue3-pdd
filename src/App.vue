@@ -9,6 +9,9 @@
 import Tabar from "./components/Tabar/Tabar";
 export default {
   name: "App",
+  mounted() {
+    this.$store.dispatch("getUserInfo")
+  },
   components: {
     Tabar
   }

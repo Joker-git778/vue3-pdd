@@ -102,6 +102,18 @@ const routes = [{
             import ("@/views/Login/Login")
     },
     {
+        path: "/setting",
+        name: "setting",
+        component: () =>
+            import ("@/views/Me/MeSetting")
+    },
+    {
+        path: "/detail",
+        name: "detail",
+        component: () =>
+            import ("@/views/Me/UserDetail")
+    },
+    {
         path: '/',
         redirect: '/home'
     }

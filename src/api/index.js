@@ -20,8 +20,14 @@ export const getSearchGoods = () => ajax(`${BASE_URL}/api/searchgoods`);
 // 短信验证码
 export const getPhoneCode = (phone) => ajax(`${BASE_URL}/api/sendCode`, phone);
 
+// 2.8 用户名和密码登录
+export const pwdLogin = (name, pwd, captcha) => ajax(BASE_URL + '/api/loginPwd', { name, pwd, captcha }, 'POST');
+
 // 手机验证码登录
 export const phoneCodeLogin = (phone, code) => ajax(`${BASE_URL}/api/loginCode`, { phone, code }, 'POST');
 
-// 账号密码登录
-// export const loginPwd = (name, pwd, captcha) => ajax(`${BASE_URL}/api/loginPwd`, { name, pwd, captcha }, 'POST');
+// 获取登录用户信息
+export const getUserInfo = () => ajax(`${BASE_URL}/api/userInfo`);
+
+// 退出登录
+export const getLogOut = () => ajax(`${BASE_URL}/api/logout`)

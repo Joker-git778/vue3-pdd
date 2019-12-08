@@ -18,10 +18,19 @@ import LyTab from 'ly-tab';
 import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
 
+// 引入字体图标文件
+import "./common/css/style.css";
+
 // vant
-import { Toast, Notify } from 'vant';
+import { Toast, Notif } from 'vant';
+import { ActionSheet } from 'vant';
+import { DatetimePicker } from 'vant';
+import { Popup } from 'vant';
 import 'vant/lib/index.css';
-Vue.use(Toast, Notify);
+Vue.use(Popup);
+Vue.use(ActionSheet);
+Vue.use(DatetimePicker);
+Vue.use(Toast, Notif);
 
 Vue.use(LyTab);
 Vue.use(vuescroll);

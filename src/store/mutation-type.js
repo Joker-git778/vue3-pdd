@@ -4,3 +4,4 @@ export const HOME_SHOP_LIST = "home_shop_list"; // 首页商品数据
 export const RECOMMENT_SHOP_LIST = "recomment_shop_list"; // 推荐商品列表
 export const GET_SEARCH_GOODS = "get_search_goods"; // 搜索列表数据
 export const USER_INFO = "user_info"; // 用户信息
+export const RESET_USER_INFO = "reset_user_info"; // 退出登录

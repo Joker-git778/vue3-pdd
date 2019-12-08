@@ -6,7 +6,9 @@ import {
     getHomeNav,
     getHomeShopList,
     getRecommentShopList,
-    getSearchGoods
+    getSearchGoods,
+    getUserInfo,
+    getLogOut
 } from '../api/index';
 
 import {
@@ -15,7 +17,8 @@ import {
     HOME_SHOP_LIST,
     RECOMMENT_SHOP_LIST,
     GET_SEARCH_GOODS,
-    USER_INFO
+    USER_INFO,
+    RESET_USER_INFO
 } from "./mutation-type";
 
 Vue.use(Vuex)
@@ -54,6 +57,9 @@ export default new Vuex.Store({
         },
         [USER_INFO](state, { userInfo }) {
             state.userInfo = userInfo;
+        },
+        [RESET_USER_INFO](state) {
+            state.userInfo = {};
         }
     },
     actions: {
@@ -93,6 +99,21 @@ export default new Vuex.Store({
         // 同步用户信息
         syncUserInfo({ commit }, userInfo) {
             commit(USER_INFO, { userInfo });
+        },
+        // 异步获取用户信息
+        async getUserInfo({ commit }) {
+            const res = await getUserInfo();
+            // console.log(res);
+            if (res.success_code === 200) {
+                commit(USER_INFO, { userInfo: res.message });
+            }
+        },
+        // 退出登录
+        async logOut({ commit }) {
+            const res = await getLogOut();
+            if (res.success_code === 200) {
+                commit(RESET_USER_INFO);
+            }
         }
     },
     modules: {}

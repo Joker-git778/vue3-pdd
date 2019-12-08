@@ -83,7 +83,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getPhoneCode, phoneCodeLogin, loginPwd } from "@/api/index";
+import { getPhoneCode, phoneCodeLogin, pwdLogin } from "@/api/index";
 export default {
   name: "page",
   data() {
@@ -168,6 +168,8 @@ export default {
           return this.$notify({ type: "danger", message: "请输入验证码!" });
         } else {
           return this.$notify({ type: "success", message: "我是模拟的-登陆成功！" });
+          // const res = await pwdLogin(this.user_name, this.pwd, this.captcha);
+          // console.log(res)
         }
       }
 

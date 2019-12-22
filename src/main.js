@@ -22,7 +22,8 @@ import 'vuescroll/dist/vuescroll.css';
 import "./common/css/style.css";
 
 // vant
-import { Toast, Notif } from 'vant';
+import { Toast } from 'vant';
+import { Notify } from 'vant';
 import { ActionSheet } from 'vant';
 import { DatetimePicker } from 'vant';
 import { Popup } from 'vant';
@@ -30,7 +31,8 @@ import 'vant/lib/index.css';
 Vue.use(Popup);
 Vue.use(ActionSheet);
 Vue.use(DatetimePicker);
-Vue.use(Toast, Notif);
+Vue.use(Notify);
+Vue.use(Toast);
 
 Vue.use(LyTab);
 Vue.use(vuescroll);
